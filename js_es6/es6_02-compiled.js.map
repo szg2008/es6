@@ -1,0 +1,1 @@
+{"version":3,"sources":["es6_02.js"],"names":[],"mappings":";;AAAA;;;;;;AAMA,CAAC,CAAD,EAAG,CAAH,EAAK,CAAL,EAAQ,GAAR,CAAY;AAAA,SAAG,IAAE,CAAF,GAAI,CAAP;AAAA,CAAZ","file":"es6_02-compiled.js","sourcesContent":["/**\r\n * 浏览器环境\r\n * 使用babelify\r\n * 在package.json中进行配置\r\n *\r\n */\r\n[2,4,6].map(x=>x*x*x);\r\n"]}
