@@ -40,7 +40,7 @@ console.log(REGEX.lastIndex);
 
 var REGEXY = new RegExp('a', 'y');
 REGEXY.lastIndex = 4;
-var matchY = REGEXY.exec('qswaacd');
+var matchY =  .exec('qswaacd');
 console.log(matchY);
 console.log(matchY.index);
 console.log(matchY.input);
