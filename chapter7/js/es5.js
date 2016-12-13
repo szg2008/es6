@@ -4,6 +4,16 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 /**
  * 数组的扩展
+ *      Array.from
+ *      Array.of
+ *      Array.copyWithin
+ *      Array.find
+ *      Array.findIndex
+ *      Array.fill
+ *      Array.entries
+ *      Array.keys
+ *      Array.values
+ *      Array.includes
  */
 
 /**
@@ -49,7 +59,7 @@ console.log(Array.of()); //[]
 console.log(Array.of(2, 4, 6, 7).length); //4
 
 /**
- * copyWithin
+ * Array.copyWithin
  *      在当前数组内部将指定位置的成员复制到其他位置,并且覆盖这个位置的值
  *      params:
  *          target(必填)：从该位置开始替换数据
@@ -61,7 +71,7 @@ console.log([1, 2, 3, 4, 5].copyWithin(0, 3));
 console.log([1, 2, 3, 4, 5].copyWithin(1, -2, -1)); //负数从后往前，或者先加一个数组的长度变成整数，然后再替换
 
 /**
- * find、findIndex
+ * Array.find、Array.findIndex
  *      find：找出第一个符合条件的数组成员
  *      findIndex：返回第一个符合条件的数组成员的位置，否则返回-1
  * **/
@@ -79,7 +89,7 @@ var findIndex = [2, -5, 9, 6].findIndex(function (item) {
 console.log(findIndex); //2
 
 /****
- * fill:
+ * Array.fill:
  *      给定值，然后填充数组,如果数组中本身有值，那么直接覆盖，可以接受第二第三个参数，用来指定开始位置和结束位置
  */
 console.log(new Array(3).fill(7)); //[7,7,7]

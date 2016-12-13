@@ -1,5 +1,15 @@
 /**
  * 数组的扩展
+ *      Array.from
+ *      Array.of
+ *      Array.copyWithin
+ *      Array.find
+ *      Array.findIndex
+ *      Array.fill
+ *      Array.entries
+ *      Array.keys
+ *      Array.values
+ *      Array.includes
  */
 
 /**
