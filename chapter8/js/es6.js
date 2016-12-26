@@ -160,5 +160,55 @@ const [firstarr,...restarr] = [3,5,67,8];//赋值的时候rest必须放在最后
 console.log(firstarr);//3
 console.log(restarr);//[5,67,8]
 
+//name属性:返回函数的函数名
+function funame(){
+}
+console.log(funame.name);//funame
+console.log((new Function()).name);//anonymous
 
+//箭头函数
+/**
+箭头函数使用时需要注意：
+	(1)函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。this指向固定化
+	(2)不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+	(3)不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用Rest参数代替。
+	(4)不可以使用yield命令，因此箭头函数不能用作Generator函数。
+	(5)箭头函数中根本没有自己的this，this只能是引用它外层的this。正是因为如此，它才不能作为构造函数使用。除此之外，arguments,new,super都不存在
+**/
+let jiantou1 = v => v;
+let jiantou2 = (sum1,sum2) => sum1 + sum2;
+let jiantou3 = (sum1,sum2,sum3) => {return sum1*sum2*sum3};
+let jiantou4 = (head,...tail) => [head,tail];
+console.log(jiantou4(1,2,3,5,6));//[1,[2,3,5,6]]
 
+function Timer() {
+  this.s1 = 0;
+  this.s2 = 0;
+  // 箭头函数
+  setInterval(() => this.s1++, 1000);
+  // 普通函数
+  setInterval(function () {
+    this.s2++;
+  }, 1000);
+}
+
+var timer = new Timer();
+//s1使用箭头函数，this对象指向的是函数内部的对象，而s2中的this指向的是window
+setTimeout(() => console.log('s1: ', timer.s1), 3100);//s1:3
+setTimeout(() => console.log('s2: ', timer.s2), 3100);//s2:0
+/**嵌套的箭头函数**/
+let insert = (value) => ({into:(array) => ({after:(afterValue) => {
+	array.splice(array.indexOf(afterValue) + 1,0,value);
+	return array;
+}})});
+
+console.log(insert(2).into([4,8]).after(1));//[2,4,8]
+
+//绑定this:函数绑定运算符::
+//左边是一个对象，右边是一个函数，运算符会自动将左边的对象作为上下文(this)对象，绑定到右边的函数中,如果左边的对象为空，那么会将该方法绑定到该对象上面
+//let log = ::console.log;//目前还无法识别
+//console.log(log);
+
+//函数参数的尾逗号,es6允许函数的最后一个参数后面多加一个逗号
+let douhao = (d1,d2,) => (d1 + d2)
+console.log(douhao(2,6));//8
