@@ -1,0 +1,150 @@
+/**
+对象的扩展
+**/
+
+/**
+属性的简洁表示法
+	es6允许在对象中直接写变量，这个时候，属性名是变量名，属性值是变量的值
+	方法也可以简写
+**/
+var foo = 'bar';
+var baz = {foo};
+console.log(baz);//{foo:bar}
+function fun1(x,y){
+	return {x,y};
+}
+console.log(fun1(3,7));//{x;3,y:7}
+//方法简写
+var fun2 = {
+	method(){
+		return 'Hello Fun2';
+	}
+};
+console.log(fun2.method());//Hello Fun2
+//综合属性和方法简写的例子
+let attr1 = '20161227';
+let fun3 = {
+	attr1,//属性简写
+	method(){//方法简写
+		return 'Hello Fun3';
+	}
+
+};
+console.log(fun3.attr1);//20161227
+console.log(fun3.method());//Hello Fun3
+
+/**
+属性名表达式
+	允许使用字面量定义对象的时候，使用表达式作为对象的属性名进行定义
+**/
+let attr2 = 'attr2';
+var fun4 = {
+	[attr2]:true
+};
+console.log(fun4[attr2]);//true
+console.log(fun4['attr2']);//true
+
+/**
+方法的name属性
+	函数的name属性，返回函数名
+	bind方法创造的函数，name属性返回的值等于bound+原函数的名称
+	Function创造的函数，name属性返回anonymous
+**/
+var fun5 = {
+	'attr3':false,
+	method(){
+		return 'Hello Fun5';
+	}
+}
+console.log(fun5.attr3);//false
+console.log(fun5.method.name);//method
+console.log(new Function().name);//anonymous
+console.log(fun5.method.bind().name);//bound method
+
+/**
+Object.is():比较两个值是否相等
+	'==':自动转换数据类型
+	'===':不会自动转换数据类型。NaN===NaN //false	+0===-0 //true
+**/
+console.log(Object.is('foo','foo'));//true
+console.log(Object.is({},{}));//false
+console.log(Object.is(+0,-0));//false
+console.log(Object.is(NaN,NaN));//true	NaN等于自身
+
+/**
+Object.assign：用于对象的合并,将源对象的所有可枚举属性都复制到目标对象上
+	第一个参数是目标对象，后面所有的参数都是源对象,如果对象之间存在相同的属性，那么后面的会覆盖前面的.
+	如果undefined和null作为第一个参数传入，会报错
+	如果传入的参数不是对象，会首先将其转化成对象
+	assign属于浅拷贝
+	为属性指定默认值
+	为对象添加属性和方法
+**/
+var target1 = {a:1};
+var source1 = {b:54};
+console.log(Object.assign(target1,source1));//{a:1,b:54}
+var source2 = {b:2,c:8};
+var source3 = {a:45,d:7};
+console.log(Object.assign(target1,source1,source2,source3));//{ a: 45, b: 2, c: 8, d: 7 }
+//console.log(Object.assign(undefined));//error
+//console.log(Object.assign(null));//error
+console.log(Object.assign(2));//[Number:2]
+console.log(Object.assign(2,source1));//{ [Number: 2] b: 54 }
+console.log(Object.assign(2,source1).b);//54
+//指定默认值
+var assign1Default = {
+	level:1,
+	message(){
+		return this.level
+	}
+};
+let assign1 = {
+	level:3
+};
+console.log(Object.assign({},assign1Default,assign1));//{ level: 3, message: [Function: message] }
+/**
+属性的遍历
+	(1)for...in		遍历对象自身的和继承的可枚举属性
+	(2)Object.keys()	返回一个数组，包含对象自身的可枚举属性
+	(3)Object.getOwnPropertyNames()		包含对象自身的所有属性(包括不可枚举属性)
+	(4)Object.getOwnPropertySymbols()	返回一个数组，包含对象自身的所有Symbol属性。
+	(5)Reflect.ownKeys	返回一个数组，包含对象自身的所有属性，不管是属性名是Symbol或字符串，也不管是否可枚举。
+注意：属性遍历的次序规则：
+	(1)首先遍历所有属性名为数值的属性，按照数字排序。
+	(2)其次遍历所有属性名为字符串的属性，按照生成时间排序。
+	(3)最后遍历所有属性名为Symbol值的属性，按照生成时间排序。
+**/
+var bianliObj = {[Symbol()]:0, b:0, 10:0, 2:0, a:0};
+Object.defineProperty(bianliObj,'a',{
+	enumerable:false
+});
+console.log(Reflect.ownKeys(bianliObj));//[ '2', '10', 'b', 'a', Symbol() ]
+console.log(Object.keys(bianliObj));//[ '2', '10', 'b']
+console.log(Object.getOwnPropertyNames(bianliObj));//[ '2', '10', 'b', 'a']
+console.log(Object.getOwnPropertySymbols(bianliObj));//[Symbol()]
+/**
+Object.keys()	返回一个数组，成员是参数对象自身所有可遍历属性的键名
+Object.values()	返回一个数组，成员是参数对象自身的所有可遍历属性的键值
+Object.entries()返回一个数组，成员是参数对象自身的所有可遍历属性的键值对数组	
+**/
+let {keys, values, entries} = Object;
+let objkev = { a: 1, b: 2, c: 3 };
+
+for (let key of keys(objkev)) {
+	console.log(key); // 'a', 'b', 'c'
+}
+
+for (let value of values(objkev)) {
+	console.log(value); // 1, 2, 3
+}
+
+for (let [key, value] of entries(objkev)) {
+	console.log([key, value]); // ['a', 1], ['b', 2], ['c', 3]
+}
+
+let obj = { one: 1, two: 2 };
+for (let [k, v] of Object.entries(obj)) {
+	console.log(`${JSON.stringify(k)}: ${JSON.stringify(v)}`);//"one": 1 "two": 2
+}
+
+console.log(Object.getOwnPropertyDescriptors(bianliObj));
