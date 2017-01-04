@@ -68,4 +68,121 @@ console.log(weakSet1);//WeakSet {}
 
 /**
 Map
+	1.键值对的集合,传统的Object只能将字符串当做键值,但是Map可以是任何类型的值当做键值
+	2.'true'和true是2个不同的键值
+	3.如果对同一个键值多次赋值，那么后面会覆盖前面
+	4.键值是跟内存地址绑定的，只要内存地址不一样，即使键值一样，也被认为是不同的键
+	5.属性:
+		size:返回结构的成员总数
+	6.方法:
+		set:设置key所对应的键值，返回Map
+		get:获取key所对应的键值
+		has:返回布尔值，表示某个键是否在Map中
+		delete:删除某个键
+		clear:清除Map中所有成员
+	7.遍历Map:keys,values,entries,forEach
 **/
+let m1 = new Map();
+var o1 = {p:"Hello Map"};
+m1.set(o1,'content');
+console.log(m1);//Map { { p: 'Hello Map' } => 'content' }
+console.log(m1.get(o1));//content
+console.log(m1.has(o1));//true
+m1.delete(o1);
+console.log(m1.get(o1));//undefined
+var m2 = new Map([
+	['name','xiaohong'],
+	['addr','beijing'],
+	['gender','1']
+]);
+console.log(m2.get('name'));//xiaohong
+
+m2.set('name','tom');//对同一个键值多次赋值
+console.log(m2.get('name'));//tom
+var k1 = ['a'],k2 = ['a'];
+m2.set(k1,'111');
+m2.set(k2,'222');
+console.log(m2.get(k1));//111
+console.log(m2.get(k2));//222
+m2.set(NaN,234);
+console.log(m2.get(NaN));//234
+
+console.log(m2.size);//6
+
+for(let key of m2.keys()){
+	console.log(key);//name addr gender [ 'a' ] [ 'a' ] NaN
+}
+for(let value of m2.values()){
+	console.log(value);//tom beijing 1 111 222 234
+}
+for(let [key,value] of m2.entries()){
+	console.log(key,value);//name tom  addr beijing  gender 1  [ 'a' ] '111'  [ 'a' ] '222'  NaN 234
+}
+for(let item of m2){
+	console.log(item);//[ 'name', 'tom' ]	[ 'addr', 'beijing' ]	[ 'gender', '1' ]	[ [ 'a' ], '111' ]	[ [ 'a' ], '222' ]	[ NaN, 234 ]
+}
+
+//Map结构转化成数组结构，使用...扩展符
+console.log([...m2.keys()]);//[ 'name', 'addr', 'gender', [ 'a' ], [ 'a' ], NaN ]
+console.log([...m2.values()]);//[ 'tom', 'beijing', '1', '111', '222', 234 ]
+console.log([...m2.entries()]);//[ [ 'name', 'tom' ],[ 'addr', 'beijing' ],[ 'gender', '1' ],[ [ 'a' ], '111' ],[ [ 'a' ], '222' ],[ NaN, 234 ] ]
+
+
+//Map与其他数据结构的相互转换
+//1.Map转化为数组,使用扩展符
+let m3 = new Map().set('foo',4).set(['a'],'baz').set(NaN,123);
+console.log(m3);//Map { 'foo' => 4, [ 'a' ] => 'baz', NaN => 123 }
+console.log([...m3]);//[ [ 'foo', 4 ], [ [ 'a' ], 'baz' ], [ NaN, 123 ] ]
+//2.数组转化为Map,将数组传入Map的构造函数中就转化成Map了
+console.log(new Map([[1,3],{'name':'john'},['ab']]));//Map { 1 => 3, undefined => undefined, 'ab' => undefined }
+//3.Map转化为对象
+function strMapToObj(strMap) {
+  let obj = Object.create(null);
+  for (let [k,v] of strMap) {
+    obj[k] = v;
+  }
+  return obj;
+}
+
+let myMap1 = new Map().set('yes', true).set('no', false);
+console.log(strMapToObj(myMap1));//{ yes: true, no: false }
+//4.对象转化为Map
+function objToStrMap(obj){
+	var strMap = new Map();
+	for(let k of Object.keys(obj)){
+		strMap.set(k,obj[k]);
+	}
+	return strMap;
+}
+console.log(objToStrMap({yes: true, no: false}));//Map { 'yes' => true, 'no' => false }
+//5.Map转化为Json,一种是键都是字符串，直接转成JSON，另一种是键含有其他类型的值，转化成JSON数组
+function strMapToJson(strMap) {
+  return JSON.stringify(strMapToObj(strMap));
+}
+
+let myMap2 = new Map().set('yes', true).set('no', false);
+console.log(strMapToJson(myMap2));//{"yes":true,"no":false}
+
+function mapToArrayJson(map) {
+  return JSON.stringify([...map]);
+}
+
+let myMap3 = new Map().set(true, 7).set({foo: 3}, ['abc']);
+console.log(mapToArrayJson(myMap3));//[[true,7],[{"foo":3},["abc"]]]
+//6.JSON转化成Map
+function jsonToStrMap(jsonStr) {
+  return objToStrMap(JSON.parse(jsonStr));
+}
+console.log(jsonToStrMap('{"yes":true,"no":false}'));//Map { 'yes' => true, 'no' => false }
+
+function jsonToMap(jsonStr) {
+  return new Map(JSON.parse(jsonStr));
+}
+console.log(jsonToMap('[[true,7],[{"foo":3},["abc"]]]'));//Map { true => 7, { foo: 3 } => [ 'abc' ] }
+/**
+WeakMap:
+	类似Map，唯一区别就是，只接受对象作为键名
+	只有set get delete has四个方法可以使用
+**/
+var wm1 = new WeakMap().set([1,2],'weakmap');
+console.log(wm1);//WeakMap {}
