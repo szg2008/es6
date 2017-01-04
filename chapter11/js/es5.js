@@ -440,4 +440,4 @@ WeakMap:
 	只有set get delete has四个方法可以使用
 **/
 var wm1 = new WeakMap().set([1, 2], 'weakmap');
-console.log(wm1);
+console.log(wm1); //WeakMap {}
