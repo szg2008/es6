@@ -4,6 +4,8 @@ Proxy
 	2.Proxy支持的拦截操作：
 		get:拦截某个属性的读取操作
 		set:拦截某个属性的赋值操作
+		apply:拦截函数的调用、apply、call操作
+		has:拦截HasProperty操作，判断对象是否具有某个属性时，会生效，常见的是使用in操作符
 **/
 let proxy1 = new Proxy({},{
 	get:function(target,key,receiver){
@@ -109,3 +111,43 @@ let proxy6 = new Proxy({},validator);
 //console.log(proxy6.age);
 //proxy6.age = 'old';
 //proxy6.age = 250;
+
+//apply
+//接受三个参数:目标对象,目标对象的上下文对象,目标对象的参数数组
+var applyTarget = function(){return 'I am target';}
+let applyHandler = {
+	apply(target,ctx,args){
+		return 'I am proxy';
+	}
+};
+var proxy7 = new Proxy(applyTarget,applyHandler);
+console.log(proxy7());//I am proxy
+
+var applyHandler2 = {
+	apply(target, ctx, args) {
+		return Reflect.apply(...arguments) * 6;
+	}
+};
+function sum (left, right) {
+	return left + right;
+};
+var proxy8 = new Proxy(sum, applyHandler2);
+console.log(proxy8(1, 2)); // 18	调用函数
+console.log(proxy8.call(null, 5, 6)); // 66		使用call
+console.log(proxy8.apply(null, [7, 8])); // 90	使用apply
+
+//has
+//for...in将不受has拦截的影响
+//如果某个属性时 不可设置的，那么使用has拦截会出错
+var applyHandler3 = {
+	has(target,key){
+		if(key[0] === '_'){
+			return false;
+		}
+		return key in target;
+	}
+};
+var applyTarget2 = { _prop: 'foo', prop: 'foo' };
+var proxy9 = new Proxy(applyTarget2, applyHandler3);
+console.log('_prop' in proxy9); //false
+console.log('prop' in proxy9);//true
