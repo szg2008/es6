@@ -6,6 +6,19 @@ Proxy
 		set:拦截某个属性的赋值操作
 		apply:拦截函数的调用、apply、call操作
 		has:拦截HasProperty操作，判断对象是否具有某个属性时，会生效，常见的是使用in操作符
+		construct:用于拦截new命令，返回的必须是一个对象，否则会报错
+		deleteProperty:拦截delete操作,如果这个方法抛出错误或者返回false,当前属性无法被删除
+		defineProperty:拦截Object.defineProperty操作
+		getOwnPropertyDescriptor:拦截Object.getOwnPropertyDescriptor
+		getPrototypeOf:拦截Object.getPrototypeOf()运算符
+		isExtensible:拦截Object.isExtensible操作
+		ownKeys:拦截Object.getOwnPropertyNames()、Object.getOwnPropertySymbols()和Object.keys()
+		preventExtensions:拦截Object.preventExtensions()
+		setPrototypeOf:拦截Object.setPrototypeOf方法
+	3.Proxy.revocable():返回一个可取消的Proxy实例
+		方法返回一个对象，属性proxy是一个Proxy实例，revoke属性是一个函数，可以取消Proxy实例。
+	4.this问题：
+		Proxy代理的情况下，目标对象内部的this关键字会指向Proxy代理。
 **/
 let proxy1 = new Proxy({},{
 	get:function(target,key,receiver){
@@ -151,3 +164,120 @@ var applyTarget2 = { _prop: 'foo', prop: 'foo' };
 var proxy9 = new Proxy(applyTarget2, applyHandler3);
 console.log('_prop' in proxy9); //false
 console.log('prop' in proxy9);//true
+
+//construct
+//接收两个参数:target：目标对象;args：构建函数的参数对象
+var proxy10 = new Proxy(function(){},{
+	construct(target,args){
+		console.log('called' + args.join(','));
+		return {value:args[0]*124};
+	}
+});
+console.log((new proxy10(3)).value);//called3 372
+
+//deleteProperty
+var proxy11 = new Proxy({_prop:false},{
+	deleteProperty(target,key){
+		if(key[0] != "_"){
+			throw new Error(`Invalid attempt to delete private ${key} property`);
+		}
+	}
+});
+//delete proxy11._prop
+
+//defineProperty
+var proxy12 = new Proxy({}, {
+	defineProperty(target,key,descriptor){
+		return false;
+	}
+});
+//proxy12.foo = 'bar'
+
+//getOwnPropertyDescriptor
+var proxy13 = new Proxy({ _foo: 'bar', baz: 'tar' }, {
+	getOwnPropertyDescriptor(target,key){
+		if(key[0] == "_"){
+			return;
+		}
+		return Object.getOwnPropertyDescriptor(target, key);
+	}
+});
+console.log(Object.getOwnPropertyDescriptor(proxy13,'_foo'));//undefined
+console.log(Object.getOwnPropertyDescriptor(proxy13,'baz'));//{ value: 'tar',writable: true,enumerable: true,configurable: true }
+
+//getPrototypeOf
+var proto14 = {};
+var proxy14 = new Proxy({}, {
+  getPrototypeOf(target) {
+    return proto14;
+  }
+});
+console.log(Object.getPrototypeOf(proxy14) === proto14); // true
+
+//isExtensible
+var proto15 = new Proxy({}, {
+  isExtensible: function(target) {
+    console.log("called");
+    return true;
+  }
+});
+
+console.log(Object.isExtensible(proto15));//called true
+
+//ownKeys:ownKeys方法返回的数组成员，只能是字符串或 Symbol 值。如果有其他类型的值，或者返回的根本不是数组，就会报错
+let targetKey = {
+	'a':1,
+	'b':2,
+	'c':3
+};
+var proxy16 = new Proxy(targetKey,{
+	ownKeys(target){
+		return ['a'];
+	}
+});
+console.log(Object.keys(proxy16));//['a']
+
+//preventExtensions
+//只有目标对象不可扩展时（即Object.isExtensible(proxy)为false），proxy.preventExtensions才能返回true，否则会报错
+var proxy17 = new Proxy({}, {
+  preventExtensions: function(target) {
+    console.log('called');
+    Object.preventExtensions(target);
+    return true;
+  }
+});
+
+Object.preventExtensions(proxy16);
+
+//setPrototypeOf
+var proxy17 = new Proxy(function(){}, {
+	setPrototypeOf (target, proto) {
+		throw new Error('Changing the prototype is forbidden');
+	  }
+});
+//proxy.setPrototypeOf(proxy17, {});
+
+
+//Proxy.revocable()
+let {proxy, revoke} = Proxy.revocable({}, {});
+proxy.foo = 123;//proxy是一个Proxy实例
+console.log(proxy.foo); // 123
+revoke();//调用函数取消Proxy实例
+//console.log(proxy.foo); // TypeError: Revoked		再次访问的时候该实例已经不存在
+
+//this对象
+const _name = new WeakMap();
+class Person {
+  constructor(name) {
+    _name.set(this, name);
+  }
+  get name() {
+    return _name.get(this);
+  }
+}
+
+const jane = new Person('Jane');
+console.log(jane.name); // 'Jane'
+
+const proxy18 = new Proxy(jane, {});
+console.log(proxy18.name); // undefined		this指向了proxy实例，所以不能取到name属性
