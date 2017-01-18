@@ -156,7 +156,7 @@ function set(target, key, value, receiver) {
 }
 
 var person = observable({
-	name: 'xiaohong',
+	name: '张三',
 	age: 20
 });
 
@@ -165,4 +165,4 @@ function print() {
 }
 
 observe(print);
-//person.name = '李四';
+
