@@ -109,6 +109,7 @@ try {
 
 var iter8 = {};
 iter8[Symbol.iterator] = iter7[Symbol.iterator].bind(iter7);
+//给iter6部署了iter7的iterator接口，所以遍历iter8输出的是iter7的属性对象
 
 var _iteratorNormalCompletion2 = true;
 var _didIteratorError2 = false;
@@ -120,6 +121,8 @@ try {
 
 		console.log(_v); // red green blue
 	}
+
+	//Set和Map结构,按照各个成员添加的顺序进行输出
 } catch (err) {
 	_didIteratorError2 = true;
 	_iteratorError2 = err;
@@ -134,3 +137,73 @@ try {
 		}
 	}
 }
+
+var iter9 = new Set(["Gecko", "Trident", "Webkit", "Webkit"]);
+var _iteratorNormalCompletion3 = true;
+var _didIteratorError3 = false;
+var _iteratorError3 = undefined;
+
+try {
+	for (var _iterator3 = iter9[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+		var _v2 = _step3.value;
+		//不输出重复的数据
+		console.log(_v2); //"Gecko", "Trident", "Webkit"
+	}
+} catch (err) {
+	_didIteratorError3 = true;
+	_iteratorError3 = err;
+} finally {
+	try {
+		if (!_iteratorNormalCompletion3 && _iterator3.return) {
+			_iterator3.return();
+		}
+	} finally {
+		if (_didIteratorError3) {
+			throw _iteratorError3;
+		}
+	}
+}
+
+var iter10 = new Map();
+iter10.set('edtion', 9);
+iter10.set('committee', 11);
+iter10.set('scholl', 67);
+var _iteratorNormalCompletion4 = true;
+var _didIteratorError4 = false;
+var _iteratorError4 = undefined;
+
+try {
+	for (var _iterator4 = iter10[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+		var _step4$value = _slicedToArray(_step4.value, 2),
+		    name = _step4$value[0],
+		    value = _step4$value[1];
+
+		console.log(name, value); //edtion 9	committee 11	scholl 67
+	}
+} catch (err) {
+	_didIteratorError4 = true;
+	_iteratorError4 = err;
+} finally {
+	try {
+		if (!_iteratorNormalCompletion4 && _iterator4.return) {
+			_iterator4.return();
+		}
+	} finally {
+		if (_didIteratorError4) {
+			throw _iteratorError4;
+		}
+	}
+}
+
+console.log(iter10.keys()); //MapIterator { 'edtion', 'committee', 'scholl' }
+console.log(iter10.entries()); //MapIterator { [ 'edtion', 9 ], [ 'committee', 11 ], [ 'scholl', 67 ] }
+console.log(iter10.values()); //MapIterator { 9, 11, 67 }
+
+//对于普通的对象，不能使用for...of进行遍历，必须实现Iterator接口才能进行遍历，但是只能使用for...in进行遍历键值
+
+/**
+	for...of相比于其他遍历语法的优势：
+		1.有着同for...in一样的语法，但是没有for...in那些缺点
+		2.它可以和break、continue和return配合使用
+		3.提供了遍历所有数据结构的统一操作接口
+**/

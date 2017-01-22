@@ -60,8 +60,34 @@ for(let v of iter7) {
 }
 
 const iter8 = {};
-iter8[Symbol.iterator] = arr[Symbol.iterator].bind(arr);
+iter8[Symbol.iterator] = iter7[Symbol.iterator].bind(iter7);
+//给iter6部署了iter7的iterator接口，所以遍历iter8输出的是iter7的属性对象
 
 for(let v of iter8) {
   console.log(v); // red green blue
 }
+
+//Set和Map结构,按照各个成员添加的顺序进行输出
+var iter9 = new Set(["Gecko", "Trident", "Webkit", "Webkit"]);
+for(let v of iter9) {//不输出重复的数据
+	console.log(v);//"Gecko", "Trident", "Webkit"
+}
+let iter10 = new Map();
+iter10.set('edtion',9);
+iter10.set('committee',11);
+iter10.set('scholl',67);
+for(let [name,value] of iter10){
+	console.log(name,value);//edtion 9	committee 11	scholl 67
+}
+console.log(iter10.keys());//MapIterator { 'edtion', 'committee', 'scholl' }
+console.log(iter10.entries());//MapIterator { [ 'edtion', 9 ], [ 'committee', 11 ], [ 'scholl', 67 ] }
+console.log(iter10.values());//MapIterator { 9, 11, 67 }
+
+//对于普通的对象，不能使用for...of进行遍历，必须实现Iterator接口才能进行遍历，但是只能使用for...in进行遍历键值
+
+/**
+	for...of相比于其他遍历语法的优势：
+		1.有着同for...in一样的语法，但是没有for...in那些缺点
+		2.它可以和break、continue和return配合使用
+		3.提供了遍历所有数据结构的统一操作接口 
+**/
