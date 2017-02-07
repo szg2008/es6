@@ -2,7 +2,7 @@
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var _marked = [generator1, generator2, generator3, generator5, generator10, generator11].map(regeneratorRuntime.mark);
+var _marked = [generator1, generator2, generator3, generator5, generator10, generator11, generator12, generator13, generator14].map(regeneratorRuntime.mark);
 
 /**
 Generator函数：
@@ -430,4 +430,78 @@ console.log(obj1.mygenerator1().next()); //{ value: 1, done: false }
 
 /**
 Generator函数的this
+	Generator函数不能跟new操作符一起使用
 **/
+function generator12() {
+	return regeneratorRuntime.wrap(function generator12$(_context12) {
+		while (1) {
+			switch (_context12.prev = _context12.next) {
+				case 0:
+				case 'end':
+					return _context12.stop();
+			}
+		}
+	}, _marked[6], this);
+}
+
+generator12.prototype.hello = function () {
+	return 'hi!';
+};
+
+var obj2 = generator12();
+
+console.log(obj2 instanceof generator12); // true
+console.log(obj2.hello()); // 'hi!'
+
+
+function generator13() {
+	return regeneratorRuntime.wrap(function generator13$(_context13) {
+		while (1) {
+			switch (_context13.prev = _context13.next) {
+				case 0:
+					this.a = 23;
+
+				case 1:
+				case 'end':
+					return _context13.stop();
+			}
+		}
+	}, _marked[7], this);
+}
+
+var obj3 = generator13();
+console.log(obj3.a); //undefined
+
+//利用一个空对象来辅助
+function generator14() {
+	return regeneratorRuntime.wrap(function generator14$(_context14) {
+		while (1) {
+			switch (_context14.prev = _context14.next) {
+				case 0:
+					this.a = 1;
+					_context14.next = 3;
+					return this.b = 2;
+
+				case 3:
+					_context14.next = 5;
+					return this.c = 3;
+
+				case 5:
+				case 'end':
+					return _context14.stop();
+			}
+		}
+	}, _marked[8], this);
+}
+var obj4 = {};
+var gene14 = generator14.call(obj4);
+
+console.log(gene14.next()); // Object {value: 2, done: false}
+console.log(gene14.next()); // Object {value: 3, done: false}
+console.log(gene14.next()); // Object {value: undefined, done: true}
+//遍历完成之后就会将Generator函数中定义的属性全部绑定在obj4上面了
+console.log(obj4.a); // 1
+console.log(obj4.b); // 2
+console.log(obj4.c); // 3
+
+//将gene14和obj4改成同一个对象,办法就是将obj4改成generator14.prototype
