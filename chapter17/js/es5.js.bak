@@ -1,0 +1,70 @@
+'use strict';
+
+/**
+Promise对象:
+	1.异步编程的一种解决方案。
+		(1)代表一个异步操作，有三种状态，Pending、Resolved、Rejected。只有是异步操作才可以决定当前是哪一种状态;
+		(2)一旦状态改变，就不会再变，任何时候都可以得到这个结果。
+	2.是一个构造函数，用来生成Promise实例。
+**/
+function promise1(ms) {
+	return new Promise(function (resolve, reject) {
+		setTimeout(resolve, ms, 'done');
+	});
+}
+
+promise1(2000).then(function (value) {
+	console.log(value); //done
+});
+
+var promise2 = new Promise(function (resolve, reject) {
+	console.log('resolve'); //初始化之后立即执行
+	resolve('ok'); //表示执行成功,如果带有参数，这个参数会传递给回调函数
+});
+promise2.then(function (rs) {
+	console.log(rs); //所有同步操作执行完成之后再执行,只有执行了resolve方法之后才证明是回调成功了
+});
+console.log('reject'); //resolve	reject	then
+
+/**
+Promise.prototype.then():使用then方法可以采用链式写法，因为then方法本身也是返回一个Promise对象
+**/
+
+/**
+Promise.prototype.catch():
+	用于指定发生错误时的回调函数
+		最好不要都写在then中，分开成功和失败对应then和catch,这样的话，如果then方法抛出错误，catch也会捕获;
+		catch返回的还是一个Promise对象，因此还可以继续链式的写then方法，如果此时这个then方法里面报错了，而下面又没有catch，那么这个错误将不会被捕获
+		catch里面还能报错，如果没有继续的catch工作，那么这个错误就不能捕获了
+**/
+/**promise3('1.json').then(function(){
+
+}).catch(function(){
+
+});**/ //如果状态返回resolve，则执行then方法，反之，执行的是catch方法
+
+// bad
+promise4.then(function (data) {
+	// success
+}, function (err) {
+	// error
+});
+
+// good
+promise5.then(function (data) {//cb
+	// success
+}).catch(function (err) {
+	// error
+});
+
+/**
+Promise.all(params):params一定是具有Iterator接口的参数
+	将多个Promise实例包装成一个实例
+	实例的状态有2中，params中的状态都为resolve;状态其中有一个为reject
+**/
+
+/**
+Promise.race(params):params一定是具有Iterator接口的参数
+	将多个Promise实例包装成一个实例
+	和all方法类似，不同的是params其中有一个改变状态，实例就改变状态
+**/
