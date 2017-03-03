@@ -75,6 +75,8 @@ let class5 = class me5{
 		return me5.name;
 	}
 }
+let cls5 = new class5();
+console.log(cls5.getClassName());//me5
 //立即执行的class
 var class6 = new class{
 	constructor(name){
@@ -88,6 +90,72 @@ console.log(class6.sayName());//suzg
 
 
 /*******************类的继承**********************/
+/**
+1.通过extends关键字进行继承
+2.在构造方法中使用super关键字调用父类的构造方法来绑定父类的this，这个是必须调用的,因为子类自己没有this对象
+3.如果子类没有显式的定义构造方法，那么默认会创建一个构造方法
+4.es6的继承机制是首先创造父类的实例this，所以在子类中需先调用super，然后再通过子类的构造函数修改this
+5.类的prototype属性和__proto__属性:es5中，每一个对象都有一个__prop__属性，都是指向对应的构造函数的prototype属性;es6中，Class同时拥有prototype属性和__prop__属性
+6.extends后面可以跟多种类型的值
+***/
+class subclass1 extends class1{
+	constructor(x,y,z){
+		super(x,y);//调用父类的构造方法获取this对象
+		console.log(this);//subclass1 { x: 'z', y: 't' }
+		this.z = z;
+	}
+	toString(){
+		return this.z + ' ' + super.toString();//调用父类的toString方法
+	}
+}
+
+//私有方法,就是将定义的方法放在class类定义的外面。
+function pri1(){
+
+}
+
+let subcls1 = new subclass1('z','t','j');
+console.log(subcls1.toString());//j (z, t)
+console.log(subcls1 instanceof subclass1);//true
+console.log(subcls1 instanceof class1);//true
+
+//Object.getPrototypeOf(),判断一个类是否继承了另外一个类
+console.log(Object.getPrototypeOf(subclass1) == class1);//true subclass1继承了class1
+console.log(Object.getPrototypeOf(class1) == Object);//false
+
+/**
+super关键字：
+	1.作为函数调用，代表父类的构造函数，执行super函数返回的是子类的实例
+	2.作为对象时，指向的是父类的原型对象
+	3.作为对象时，指向的是父类的原型对象，所以定义在父类实例上面的方法和属性是不能通过super访问的，只能访问定义在父类原型上面的方法和属性
+	4.子类的原型的原型是父类的原型:subcls.__prop__.__prop__ = cls.__prop__
+**/
+class class7{
+	constructor(){
+		this.x = 'name';
+		console.log(this);
+	}
+	p(){
+		return 11;
+	}
+}
+class7.prototype.y = 'age';
+class subclass2 extends class7{
+	constructor(){
+		super();
+		console.log(super.p());//作为对象，指向的是父类的实例,这里调用了父类的方法
+		console.log(super.x);//undefined 取不到父类实例上面的属性
+		console.log(super.y);//age 能取到父类定义在原型上的属性
+	}
+}
+let cls7 = new class7();//class7 {}
+let subcls2 = new subclass2();//subclass2 {} 11
+
+
+
+
+
+
 
 
 
