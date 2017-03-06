@@ -151,15 +151,101 @@ class subclass2 extends class7{
 let cls7 = new class7();//class7 {}
 let subcls2 = new subclass2();//subclass2 {} 11
 
+/**
+原生构造函数的继承：Boolean、Number、String、Array、Date、Function、RegExp、Error、Object
+	extends不仅可以用来继承类，还可以用来继承原生的构造函数;
 
+***/
+class class8 extends Array{
+	constructor(...args){
+		super(...args);
+	}
+}
 
+var cls8 = new class8();
+cls8[0] = 12;
+console.log(cls8);//[12]
+console.log(cls8.length);//1
 
+class class9 extends Object{
+	constructor(){
+		super(...arguments);
+	}
+}
+let cls9 = new class9({attr:true});
+console.log(cls9.attr === true);//true
 
+/**Class的取值函数getter和存值函数setter**/
+class class10{
+	constructor(){
 
+	}
+	get prop(){
+		return 'getter'
+	}
+	set prop(value){
+		console.log('setter' + ':' + value);
+	}
+}
 
+var cls10 = new class10();
+cls10.prop = 234;//setter:234
+console.log(cls10.prop);//getter
 
+//Generator方法
+class class11 {
+  	constructor(...args) {
+    	this.args = args;
+  	}
+  	*[Symbol.iterator]() {
+    	for (let arg of this.args) {
+      		yield arg;
+    	}
+  	}
+}
 
+for (let x of new class11('hello', 'world')) {
 
+  console.log(x);//hello world
+}
 
+//静态方法static，直接通过类来调用,子类也可以继承父类的静态方法，也可以通过子类中的super进行调用
+class class12{
+	static method(){
+		return 'static';
+	}
+}
+console.log(class12.method());//static
+
+//Class的静态属性
+class class13{
+	//static prop = 11;暂时不支持此写法
+}
+class13.prop = 11;
+console.log(class13.prop);//11
+
+//私有属性和私有方法，前面加#
+// class class14{
+// 	#x = 0;
+// 	constructor(x){
+// 		#x;
+// 	}
+// }
+
+//new.target
+class class15{
+	constructor(){
+		console.log(new.target);//返回当前class，如果继承，返回子类的class
+	}
+}
+
+class subclass3 extends class15{
+	constructor(){
+		super();
+	}
+}
+
+let cls15 = new class15();//[Function: class15]
+let subcls15 = new subclass3();//undefined??
 
 
