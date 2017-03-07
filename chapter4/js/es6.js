@@ -78,13 +78,13 @@ console.log(`${name} comes from ${addr}`);
 console.log(`${1} + ${2}`);//1+2
 let str = 'return ' + '`Hello ${name}`';
 let func = new Function('name',str);
-console.log(func('Jack'));
+console.log(func('Jack'));//Hello Jack
 
 //标签模板,函数被用来定义并且调用处理模板字符串
 let a = 30;var b = 15;
 tag`Hello ${a + b} world ${a * b}`;
 function tag(stringArr,value1,value2){
-    console.log(stringArr);//模板字符串中未被变量替换的部分['Hello','World','']
+    console.log(stringArr);//第一个参数是模板字符串中未被变量替换的部分['Hello','World','']
     console.log(stringArr.length);
     console.log(value1);//a+b 45
     console.log(value2);//a*b 450
@@ -97,7 +97,7 @@ function pass(literals){
     var i = 0;
     console.log(literals.raw);
     //console.log(arguments);
-    //console.log(literals);
+    console.log(literals);
     while(i < literals.length){
         result += literals[i++];
         //console.log(result);
@@ -109,3 +109,16 @@ function pass(literals){
 }
 
 console.log(msg);
+
+console.log('******************practice******************************');
+/**
+includes:包含
+startsWith：以...开头
+endsWith:以...结尾
+repeat：重复字符串
+padStart：自动向前补全
+padEnd：自动向后补全
+模板字符串``
+标签模板：调用函数处理模板字符串
+**/
+
