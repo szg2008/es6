@@ -115,9 +115,9 @@ name = _name.name;
 console.log(name); //name
 
 var pp = {
-  p: ["Hello", {
-    age: 12
-  }]
+    p: ["Hello", {
+        age: 12
+    }]
 };
 
 var _pp$p = _slicedToArray(pp.p, 2),
@@ -141,30 +141,209 @@ console.log(xyz); //11
  * 字符串解构赋值
  * **/
 
-var _szg = 'szg',
-    _szg2 = _slicedToArray(_szg, 3),
-    tt = _szg2[0],
-    oo = _szg2[1],
-    mm = _szg2[2];
+var _s = 's',
+    _s2 = _slicedToArray(_s, 3),
+    tt = _s2[0],
+    oo = _s2[1],
+    mm = _s2[2];
 
-console.log('' + tt + oo + mm); //szg
+console.log('' + tt + oo + mm); //sundefinedundefined
 var _HelloWorld = 'Hello World',
     len = _HelloWorld.length;
 
 console.log(len); //11
 
 /**
- * 数值和布尔值的解构赋值
+ * 数值和布尔值的解构赋值:
+        解构赋值时，如果等号右边是数值和布尔值，则会先转为对象。
  * **/
 var _ = 234,
     ss = _.toString;
 
+console.log(ss); //[Function: toString]
 console.log(ss === Number.prototype.toString); //true
 var _true = true,
     sss = _true.toString;
 
+console.log(sss); //[Function: toString]
 console.log(sss === Boolean.prototype.toString); //true
 
 /**
  * 函数参数的解构赋值
  * **/
+function test01(_ref8) {
+    var _ref9 = _slicedToArray(_ref8, 2),
+        x = _ref9[0],
+        y = _ref9[1];
+
+    console.log(x + y);
+}
+test01([1, 2]); //3
+
+function test02(_ref10) {
+    var _ref10$x = _ref10.x,
+        x = _ref10$x === undefined ? 0 : _ref10$x,
+        _ref10$y = _ref10.y,
+        y = _ref10$y === undefined ? 0 : _ref10$y;
+
+    console.log(x + y);
+}
+
+test02({ x: 3, y: 5 }); //8
+test02({ x: 5 }); //5
+test02({}); //0
+
+function test03() {
+    var _ref11 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { x: 1, y: 1 },
+        x = _ref11.x,
+        y = _ref11.y;
+
+    console.log([x, y]);
+}
+
+test03(); //[1,1]
+test03({ x: 6 }); //[6,undefined]
+
+/**
+ * 圆括号
+ * **/
+/**
+ *不能使用圆括号：
+ * 1.变量声明语句中.eg:var [(a)] = [3];
+ * 2.函数参数中.eg:function([(q)]){}
+ * 3.不能将整个模式或者嵌套模式中的一层放在括号中.eg:({p:foo}) = {p:'qq'};
+ *
+ *
+ * 可以使用圆括号：
+ * 赋值语句的非模式部分可以使用圆括号    eg:[(a)] = [3]
+ * **/
+
+//遍历map
+var map = new Map();
+map.set('first', 'hello');
+map.set('second', 'world');
+var _iteratorNormalCompletion = true;
+var _didIteratorError = false;
+var _iteratorError = undefined;
+
+try {
+    for (var _iterator = map[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var _step$value = _slicedToArray(_step.value, 2),
+            key = _step$value[0],
+            value = _step$value[1];
+
+        console.log(key + " : " + value);
+    }
+} catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+} finally {
+    try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+        }
+    } finally {
+        if (_didIteratorError) {
+            throw _iteratorError;
+        }
+    }
+}
+
+var _iteratorNormalCompletion2 = true;
+var _didIteratorError2 = false;
+var _iteratorError2 = undefined;
+
+try {
+    for (var _iterator2 = map[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var _step2$value = _slicedToArray(_step2.value, 1),
+            key = _step2$value[0];
+
+        console.log(key);
+    }
+} catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+} finally {
+    try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+        }
+    } finally {
+        if (_didIteratorError2) {
+            throw _iteratorError2;
+        }
+    }
+}
+
+var _iteratorNormalCompletion3 = true;
+var _didIteratorError3 = false;
+var _iteratorError3 = undefined;
+
+try {
+    for (var _iterator3 = map[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var _step3$value = _slicedToArray(_step3.value, 2),
+            value = _step3$value[1];
+
+        console.log(value);
+    }
+} catch (err) {
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
+} finally {
+    try {
+        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+        }
+    } finally {
+        if (_didIteratorError3) {
+            throw _iteratorError3;
+        }
+    }
+}
+
+console.log('****************practice******************');
+var pracA = 1,
+    pracB = 44;
+
+console.log(pracA + pracB + ''); //45
+
+var _ref12 = [],
+    _ref12$ = _ref12[0],
+    pracE = _ref12$ === undefined ? true : _ref12$;
+
+console.log(pracE); //true
+
+var _pracC$pracD = { pracC: 12, pracD: 'hell' },
+    pracC = _pracC$pracD.pracC,
+    pracD = _pracC$pracD.pracD;
+
+console.log(pracC + pracD + ''); //12hell
+
+var _ref13 = {},
+    _ref13$pracF = _ref13.pracF,
+    pracF = _ref13$pracF === undefined ? 0 : _ref13$pracF;
+
+console.log(pracF); //0
+
+var _suzg = 'suzg',
+    pracG = _suzg.length;
+
+console.log(pracG); //4
+
+var _2 = 221,
+    pracH = _2.toString;
+var _false = false,
+    pracI = _false.toString;
+
+console.log(pracH); //[Function:toString]
+console.log(pracI); //[Function:toString]
+
+function pracJ(_ref14) {
+    var _ref14$x = _ref14.x,
+        x = _ref14$x === undefined ? 0 : _ref14$x,
+        _ref14$y = _ref14.y,
+        y = _ref14$y === undefined ? 0 : _ref14$y;
+
+    console.log(x + y);
+}
+pracJ({ x: 3, y: 7 });

@@ -85,17 +85,20 @@ console.log(xyz);//11
 /**
  * 字符串解构赋值
  * **/
-let [tt,oo,mm] = 'szg';
-console.log(''+tt+oo+mm);//szg
+let [tt,oo,mm] = 's';
+console.log(''+tt+oo+mm);//sundefinedundefined
 const {length:len} = 'Hello World';
 console.log(len);//11
 
 /**
- * 数值和布尔值的解构赋值
+ * 数值和布尔值的解构赋值:
+        解构赋值时，如果等号右边是数值和布尔值，则会先转为对象。
  * **/
 let {toString:ss} = 234;
+console.log(ss);//[Function: toString]
 console.log(ss === Number.prototype.toString);//true
 let {toString:sss} = true;
+console.log(sss);//[Function: toString]
 console.log(sss === Boolean.prototype.toString);//true
 
 /**
@@ -151,3 +154,31 @@ for(let [key,] of map){
 for(let [,value] of map){
     console.log(value);
 }
+
+console.log('****************practice******************');
+let [pracA,pracB] = [1,44];
+console.log(pracA + pracB + '');//45
+
+let [pracE=true] = [];
+console.log(pracE);//true
+
+const {pracC,pracD} = {pracC:12,pracD:'hell'};
+console.log(pracC + pracD + '');//12hell
+
+const {pracF=0} = {};
+console.log(pracF);//0
+
+let {length:pracG} = 'suzg';
+console.log(pracG);//4
+
+let {toString:pracH} = 221;
+const {toString:pracI} = false;
+console.log(pracH);//[Function:toString]
+console.log(pracI);//[Function:toString]
+
+function pracJ({x=0,y=0}){
+    console.log(x+y);
+}
+pracJ({x:3,y:7});
+
+
