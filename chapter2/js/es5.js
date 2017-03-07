@@ -10,9 +10,9 @@
     /**
      * let
      * 1.只在作用域内有效
-     * 2.不存在变量提升
+     * 2.和var一样存在变量提升
      * 3.暂时性死区
-     * 4.不允许重复声明变量
+     * 4.在同一个作用域内不允许重复声明变量
      * 5.块级作用域
      * ***/
     //1.只在作用域内有效
@@ -32,8 +32,8 @@
 
     for (var j = 0; j < 10; j++) {}
     console.log(j); //10
-    //不存在变量提升,如果没有使用let定义，而是先赋值了，这时候输出会显示undefined
-    console.log('不存在变量提升');
+    //存在变量提升,如果没有使用let定义，而是先赋值了，这时候输出会显示undefined
+    console.log('存在变量提升');
     console.log(c); //undefined
     var c = 'c';
     //暂时性死区,在块级作用域外面声明了一个变量，在作用域内直接使用变量会输出undefined,直到let声明变量并且赋值之前
@@ -113,3 +113,19 @@
     obj.age = 13;
     console.log(obj);
 })();
+
+//practice
+console.log('*********************practice**************************');
+console.log(pracA); //undefined
+var pracA = 'pracA';
+function pracFun1() {
+    console.log(pracB); //undefined
+    var pracB = 'pracB';
+    var pracC = 'pracC1';
+}
+pracFun1();
+var pracC = 'pracC';
+var pracD = [];
+console.log(pracD); //[]
+pracD.push(33);
+console.log(pracD); //[33]
