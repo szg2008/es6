@@ -104,3 +104,12 @@ console.log(Math.log2(8));//3
 //指数运算符**
 console.log(2**2);//4
 console.log(3**6);//729
+
+
+console.log('*******************practice********************');
+/**
+Number
+Math
+三角函数
+指数
+*/

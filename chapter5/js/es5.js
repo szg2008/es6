@@ -40,7 +40,7 @@ console.log(REGEX.lastIndex);
 
 var REGEXY = new RegExp('a', 'y');
 REGEXY.lastIndex = 4;
-var matchY =  .exec('qswaacd');
+var matchY = REGEXY.exec('qswaacd');
 console.log(matchY);
 console.log(matchY.index);
 console.log(matchY.input);
@@ -54,4 +54,4 @@ console.log('aaxa'.replace(new RegExp('a', 'gy'), '=')); //==xa
 console.log(new RegExp('hello', 'y').sticky); //true
 
 //flags属性，返回正则表达式的修饰符
-console.log(new RegExp('abc', 'giy').flags);
+console.log(new RegExp('abc', 'giy').flags); //giy
