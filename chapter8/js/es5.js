@@ -26,7 +26,7 @@ function Point() {
 }
 
 var point = new Point();
-console.log(point.x, point.y);
+console.log(point.x, point.y); //0 0
 
 /**
 和解构赋值默认值结合使用
@@ -69,7 +69,7 @@ fetch2('https://www.baidu.com'); //函数参数有默认值，所以第二个参
 
 /**
 参数默认值的位置
-	如果定义了函数的默认值，通常都是尾参数(该函数的最后一个参数)
+	如果定义了函数参数的默认值，通常都是尾参数(该函数的最后一个参数)
 	如果不是最后一个参数，那么在调用函数的时候应该显示的传入undefined，否则会报错
 **/
 function param() {
@@ -102,6 +102,7 @@ console.log(function (a, b, c) {
 作用域
 	如果参数的默认值是一个变量，那么这个变量的作用域先是当前函数的作用域，然后才是全局作用域scope1
 	如果函数参数的默认值是一个函数，那么该函数的作用域是其在声明时所在的作用域scope3
+	参数有默认值的时候，在执行函数的时候参数会形成一个自己单独的作用域
 **/
 var x = 1;
 function scope1(x) {
@@ -116,7 +117,7 @@ function scope2() {
 	var y = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : x2;
 	return function () {
 		var x2 = 7;
-		console.log(y);
+		console.log(y); //3参数的作用域中x2没有定义，所以使用的是全局的x2变量
 	}();
 }
 scope2(); //3
@@ -163,11 +164,11 @@ function foo6(x6) {
 	};
 
 	x6 = 3;
-	y();
+	//y();
 	console.log(x6);
 }
 
-foo6(); // 2
+foo6(); // 3
 
 /**
 	应用
@@ -282,10 +283,10 @@ function Timer() {
 	// 箭头函数
 	setInterval(function () {
 		return _this.s1++;
-	}, 1000);
+	}, 1000); //this指向函数对象
 	// 普通函数
 	setInterval(function () {
-		this.s2++;
+		this.s2++; //this指向window
 	}, 1000);
 }
 
@@ -314,7 +315,7 @@ console.log(insert(2).into([4, 8]).after(1)); //[2,4,8]
 //let log = ::console.log;//目前还无法识别
 //console.log(log);
 
-//函数参数的尾逗号
+//函数参数的尾逗号,es6允许函数的最后一个参数后面多加一个逗号
 var douhao = function douhao(d1, d2) {
 	return d1 + d2;
 };
