@@ -26,10 +26,10 @@ let obj = {
     length:3
 };
 console.log(Array.from(obj));//[ 'name', 'age', 'addr' ]
-console.log(Array.from('hello'));
-console.log(Array.from({length:3}));
+console.log(Array.from('hello'));//['h', 'e', 'l', 'l', 'o']
+console.log(Array.from({length:3}));//[ undefined, undefined, undefined ]
 Array.from(obj,function(item){
-    console.log(item + ' world!');
+    console.log(item + ' world!');//name age addr
 });
 
 //window.onload = function(){
@@ -62,9 +62,9 @@ console.log(Array.of(2,4,6,7).length);//4
  *          start(选填)：从该位置开始读取数据
  *          end(选填)：到该位置前停止读取数据
  * **/
-console.log([1,2,3,4,5].copyWithin(0,3,4));
-console.log([1,2,3,4,5].copyWithin(0,3));
-console.log([1,2,3,4,5].copyWithin(1,-2,-1));//负数从后往前，或者先加一个数组的长度变成整数，然后再替换
+console.log([1,2,3,4,5].copyWithin(0,3,4));//[ 4, 2, 3, 4, 5 ]
+console.log([1,2,3,4,5].copyWithin(0,3));//[ 4, 5, 3, 4, 5 ]
+console.log([1,2,3,4,5].copyWithin(1,-2,-1));//[ 1, 4, 3, 4, 5 ]负数从后往前，或者先加一个数组的长度变成整数，然后再替换
 
 /**
  * Array.find、Array.findIndex
@@ -121,3 +121,46 @@ console.log([1,3,4].includes(3));//true
  * **/
 console.log(0 in [,,]);
 console.log(0 in [undefined,1]);
+
+
+console.log("***********************practice*******************************");
+/**
+Array:
+    from:将一组类似数组的对象转化为数组(静态方法)
+    of:将一组值转化成数组(静态方法)
+    copyWithin:从指定位置开始替换数据(实例方法)
+    find:返回第一个符合条件的数组成员
+    findIndex:返回第一个符合条件的数组成员的位置
+    fill:给定值，填充(覆盖)数组，可以指定开始和结束位置
+    includes:是否包含指定的值
+
+**/
+
+let pracArr1 = {
+    "0":'name',
+    "1":'age',
+    "2":'addr',
+    "3":'gender',
+    length:4//必须有length属性
+}
+let pracArr2 = [1,5,3,56];
+
+console.log(Array.from(pracArr1));//[ 'name', 'age', 'addr', 'gender' ]
+console.log(Array.of(1,2,'f',9));//[ 1, 2, 'f', 9 ]
+console.log(pracArr2.copyWithin(1,2,4));//[1,3,56,56]
+console.log(pracArr2);//[1,3,56,56]
+console.log(pracArr2.find(function(item){return item === 1}));//1
+console.log(pracArr2.findIndex(function(item){return item === 56}));//2
+console.log(new Array(5).fill(2,0,3));//[2,2,2,,]
+console.log(pracArr2.includes(3));//true
+for(let key of pracArr2.keys()){
+    console.log(key);
+}
+for(let value of pracArr2.values()){
+    console.log(value);
+}
+for(let [key,value] of pracArr2.entries()){
+    console.log(key,value);
+}
+
+
