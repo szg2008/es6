@@ -311,3 +311,17 @@ var xTag = new CollectionTag();
 console.log(Object.prototype.toString.call(xTag)); // "[object xxx]"
 
 //(11)Symbol.unscopables:对象的Symbol.unscopables属性，指向一个对象。该对象指定了使用with关键字时，哪些属性会被with环境排除。
+
+console.log('*******************practice**********************');
+var pracA = Symbol();
+var pracB = Symbol('pracB');
+var pracC = _defineProperty({}, pracB, 'c');
+console.log(pracC[pracB]); //c
+var pracD = Symbol();
+console.log(pracA == pracD); //false
+var pracE = Symbol.for();
+var pracF = Symbol.for();
+console.log(pracE == pracF); //true
+var pracG = Symbol.for('aa');
+console.log(Symbol.keyFor(pracG)); //aa
+console.log(typeof pracA === 'undefined' ? 'undefined' : _typeof(pracA)); //symbol
