@@ -32,8 +32,11 @@ var ref1 = {
 		return this.foo + this.bar;
 	}
 };
+//REF属于对象属性的赋值函数
 console.log(Reflect.get(ref1,'baz'));//4
-console.log(Reflect.get(ref1,'baz',REF));//11
+console.log(Reflect.get(ref1,'baz',REF));//11	baz部署了读取函数，所以读取函数的this绑定了赋值函数
+console.log(Reflect.get(ref1,'foo'));//1
+console.log(Reflect.get(ref1,'foo',REF));//1
 
 //set
 var ref2 = {
@@ -42,14 +45,17 @@ var ref2 = {
 		this.foo = value;
 	}
 };
-
+//如果属性设置了赋值函数，那么赋值函数的this绑定了赋值函数
 Reflect.set(ref2,'foo',2);
 console.log(ref2.foo);//2
+
 Reflect.set(ref2,'baz',4);
 console.log(ref2.foo);//4
+
 Reflect.set(ref2,'foo',6,REF);
 console.log(ref2.foo);//4	没变
 console.log(REF.foo);//6
+
 Reflect.set(ref2,'baz',9,REF);
 console.log(ref2.foo);//4	没变
 console.log(REF.foo);//9
@@ -73,6 +79,7 @@ console.log(ref4);//{}
 function ref5(name){
 	this.name = name;
 }
+//相当于初始化对象实例
 const instance1 = Reflect.construct(ref5,['xiaohong']);
 console.log(instance1.name);//xiaohong
 
@@ -154,5 +161,19 @@ function print() {
 }
 
 observe(print);
-//person.name = '李四';
+person.name = '李四';//李四,20
+person.name = 'www';//www,20
+
+console.log('*****************practice*************************');
+/**
+Reflect,对比于Object进行理解，重写了某些Object方法，使其变得更加合理。
+	1.将原有的Object中的操作符重写改写成方法
+	2.在使用Proxy进行拦截的时候，有时候需要对象的默认行为，就使用Reflect完成对象的默认行为
+	3.Reflect和Proxy的方法是对应的。这就是说在使用Proxy进行拦截对象的属性行为时，总是可以使用Reflect完成属性的默认行为
+	4.get和set方法，在设置或者获取对象属性的时候，如果属性设置了赋值函数，那么this将绑定receiver。
+***/
+//apply
+let pracA = [12.34];
+let s = Reflect.apply(Math.floor,Math,pracA);
+console.log(s);//12
 
