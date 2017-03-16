@@ -181,8 +181,52 @@ function jsonToMap(jsonStr) {
 console.log(jsonToMap('[[true,7],[{"foo":3},["abc"]]]'));//Map { true => 7, { foo: 3 } => [ 'abc' ] }
 /**
 WeakMap:
-	类似Map，唯一区别就是，只接受对象作为键名
+	类似Map，唯一区别就是，只接受对象作为键名,创建的对象被回收避免造成内存溢出
 	只有set get delete has四个方法可以使用
 **/
 var wm1 = new WeakMap().set([1,2],'weakmap');
 console.log(wm1);//WeakMap {}
+
+console.log('****************practice***********************');
+let pracA = new Set();
+pracA.add(1);
+pracA.add('aa');
+pracA.add({name:'a'});
+console.log(pracA);
+console.log(Array.from(pracA));//[ 1, 'aa', { name: 'a' } ]
+console.log([...pracA]);//[ 1, 'aa', { name: 'a' } ]
+pracA.delete('aa');
+console.log([...pracA]);//[ 1, { name: 'a' } ]
+pracA.add(1);//[ 1, { name: 'a' } ] 不添加重复的元素
+console.log(pracA.size);//2
+let pracB = new WeakSet();
+pracB.add({"name":"xiaho"});
+console.log(pracB);
+let pracC = new Map();
+pracC.set('name','xiohon');
+pracC.set('name','xiog');//覆盖前面的键值
+pracC.set('age',13);
+console.log(pracC.get('name'));
+console.log(pracC);
+console.log([...pracC]);
+console.log([...pracC.keys()]);//[name,age]
+console.log(new Map([['name','ee'],['age','7']]));//Map { 'name' => 'ee', 'age' => '7' }
+//Map转化成对象
+var mapToObj = Object.create(null);
+for(let [k,v] of pracC){
+	mapToObj[k] = v;
+}
+console.log(mapToObj);//{ name: 'xiog', age: 13 }
+console.log(Object.keys(mapToObj));//[ 'name', 'age' ]
+//对象转换成Map
+var objToMap = new Map();
+for(let k of Object.keys(mapToObj)){
+	objToMap.set(k,mapToObj[k]);
+}
+console.log(objToMap);//Map { 'name' => 'xiog', 'age' => 13 }
+//Map转化成Json:先转化成对象，然后stringify
+//Json转化成Map:先转化成对象，然后再转化成Map
+
+
+
+
