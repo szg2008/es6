@@ -1,6 +1,6 @@
 /***
 Iterator和for...of循环
-	1.es6中规定，默认的Iterator接口部署在数据结构的Symbol.iterator属性中，一个数据结构中只要有Symbol.iterator属性，那么久认为是可以遍历的。
+	1.es6中规定，默认的Iterator接口部署在数据结构的Symbol.iterator属性中，一个数据结构中只要有Symbol.iterator属性，那么就认为是可以遍历的。
 	2.默认原生就部署Iterator接口的数据结构有三类:数组、某些类似数组的对象、Map和Set结构
 	3.字符串的Iterator接口
 	4.遍历器对象的return()和throw(),自定义一个遍历器对象函数，next()是必须的，return和throw是可选的。return方法一般用在没有完成遍历之前，需要提前退出的情况
@@ -61,7 +61,7 @@ for(let v of iter7) {
 
 const iter8 = {};
 iter8[Symbol.iterator] = iter7[Symbol.iterator].bind(iter7);
-//给iter6部署了iter7的iterator接口，所以遍历iter8输出的是iter7的属性对象
+//给iter8部署了iter7的iterator接口，所以遍历iter8输出的是iter7的属性对象
 
 for(let v of iter8) {
   console.log(v); // red green blue
@@ -91,3 +91,23 @@ console.log(iter10.values());//MapIterator { 9, 11, 67 }
 		2.它可以和break、continue和return配合使用
 		3.提供了遍历所有数据结构的统一操作接口
 **/
+
+console.log('********************practice****************************');
+//主要有Symbol.iterator属性，直接部署就能得到遍历器对象
+/**
+	默认具有Symbol.iterator属性的有：数组、类似数组的对象(字符串，DomList)、Map和Set结构，直接部署Symbol.iterator属性，就可以直接使用next进行遍历
+**/
+let pracA = [1,5,3,7];
+//部署Iterator
+let setIterator = function(array){
+	let nextIndex = 0;
+	return {
+		next:function(){
+			return nextIndex < array.length ? {value:array[nextIndex++],done:false}:{value:undefined,done:true}
+		}
+	};
+}
+let pracAit = setIterator(pracA);
+console.log(pracAit.next());//{ value: 1, done: false }
+let pracAit2 = pracA[Symbol.iterator]();
+console.log(pracAit2.next());//{ value: 1, done: false }
