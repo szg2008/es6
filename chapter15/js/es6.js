@@ -46,7 +46,7 @@ console.log(gene3.next()) // Object{value:NaN, done:true}
 var gene4 = generator3(5);
 console.log(gene4.next()) // { value:6, done:false }
 console.log(gene4.next(12)) // { value:8, done:false }
-console.log(gene4.next(13)) // { value:42, done:true }
+console.log(gene4.next(13)) // { value:42, done:true } x=5 y=24 z=13
 
 /**
 for...of循环：
@@ -87,8 +87,8 @@ let gene6 = generator6();
 console.log(gene6.next());//{ value: undefined, done: false }
 
 try{
-	gene6.throw('a');
-	gene6.throw('b');
+	gene6.throw('a');//走的是函数内部的异常处理
+	gene6.throw('b');//走的是函数外部的异常处理
 
 }catch(e){
 	console.log('outer',e);
@@ -111,7 +111,7 @@ try{
 //aa bb
 
 /**
-Generator.prototype.return():返回给定的值，并且终结遍历Generator函数,如果return参数没有参数，那么返回的value值是undefined.
+Generator.prototype.return():返回给定的值，并且终结遍历Generator函数,如果return没有参数，那么返回的value值是undefined.
 	如果Generator内部有try...finally语句，那么在执行return方法的时候首先执行的是finally语句，然后再执行return
 **/
 let generator8 = function* (){
