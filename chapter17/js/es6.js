@@ -143,3 +143,38 @@ Promise.prototype.finally = function (callback) {
 /**
 Promise.try:模拟try...catch模块，用来捕获同步或者异步的异常情况
 **/
+
+console.log('*****************practice*****************************');
+//理解Promise.all,只有传入的promise数组每个都返回resolve，才会返回成功
+//在我们平时的需求中，或许有这种情况的需求，比如我们需要发2个ajax请求时，不管他们的先后顺序，当这2个ajax请求都同时成功后，我们需要执行某些操作的情况下，这种情况非常适合
+var promise1 = new Promise(function(resolve){
+    setTimeout(function(){
+        resolve(1);
+    },3000);
+});
+var promise2 = new Promise(function(resolve){
+    setTimeout(function(){
+        resolve(2);
+    },1000);
+});
+Promise.all([promise1,promise2]).then(function(value){
+    console.log(value); // 打印[1,2]
+});
+//理解Promise.race
+//只要有一个promise对象进入FulFilled或者Rejected状态的话，程序就会停止，且会继续后面的处理逻辑
+var runPromise = new Promise(function(resolve){
+    setTimeout(function(){
+        console.log(1);
+        resolve(2);
+    },500);
+});
+var runPromise2 = new Promise(function(resolve){
+    setTimeout(function(){
+        console.log(3);
+        resolve(4);
+    },1000);
+});
+// 第一个promise变为resolve后程序停止
+Promise.race([runPromise,runPromise2]).then(function(value){
+    console.log(value);//1 2 3	运行完runPromise之后race停止运行，因此runPromise2中的resolve不能继续执行
+});
